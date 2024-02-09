@@ -21,7 +21,7 @@ type DeviceData struct {
 
 func main() {
 	// Listen for incoming connections
-	listener, err := net.Listen("tcp", "0.0.0.0:8080")
+	listener, err := net.Listen("tcp", "0.0.0.0:1234")
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
