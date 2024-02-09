@@ -3,14 +3,17 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
-	"io/ioutil"
+	"log"
 	"net"
-	"net/http"
 	"strconv"
+	"strings"
 	"time"
+
+	"github.com/Projects/Zanjeer/helpers"
 )
 
 type DeviceData struct {
+	IMEI         string `json:"imei"`
 	TimeDate     string `json:"date"`
 	Lat          string `json:"lat"`
 	Lng          string `json:"lng"`
@@ -63,7 +66,12 @@ func handleClient(conn net.Conn) {
 		encodedString := hex.EncodeToString(buffer)
 		deviceInfo, err := Decoder(encodedString)
 		if err == nil {
-			Post(DecToLocation(HexToDec(deviceInfo.Lat)), DecToLocation(HexToDec(deviceInfo.Lng)))
+			Post(DeviceData{
+				IMEI: "359633103869421",
+				Lat:  DecToLocation(HexToDec(deviceInfo.Lat)),
+				Lng:  DecToLocation(HexToDec(deviceInfo.Lng)),
+			})
+			// Post(DecToLocation(HexToDec(deviceInfo.Lat)), DecToLocation(HexToDec(deviceInfo.Lng)))
 
 			fmt.Println("##############################################")
 			hexToTime, _ := hexToTime(deviceInfo.TimeDate)
@@ -146,31 +154,24 @@ func HexToDec(hex string) int64 {
 	return num
 }
 
-func Post(lat, long string) {
+const (
+	url    = "http://5.39.92.50:8081/longlat"
+	method = "POST"
+)
 
-	url := fmt.Sprintf("https://bf19-188-113-230-172.ngrok-free.app/longlat?lat=%s&lon=%s", lat, long)
-	method := "POST"
+func Post(d DeviceData) {
 
-	client := &http.Client{}
-	req, err := http.NewRequest(method, url, nil)
+	payload := strings.NewReader(fmt.Sprintf(`{
+		"imei": "%s",
+		"lon": "%s",
+		"lat": "%s"
+	}`, d.IMEI, d.Lng, d.Lat))
 
+	_, err := helpers.SendHTTPRequest(url, method, payload)
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatal("Error while updating device location", err)
 	}
-	res, err := client.Do(req)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	defer res.Body.Close()
 
-	_, err = ioutil.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	return
 }
 func hexToTime(hexTimestamp string) (time.Time, error) {
 	// Decode the hex string into a byte slice
