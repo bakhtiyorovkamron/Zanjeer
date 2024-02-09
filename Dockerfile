@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-EXPOSE 7777
+EXPOSE 1234
 
 CMD [ "go","run","main.go" ]
