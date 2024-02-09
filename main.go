@@ -15,6 +15,8 @@ type DeviceData struct {
 	Lat          string `json:"lat"`
 	Lng          string `json:"lng"`
 	NumberOfData string
+	Altitude     string
+	Angle        string
 }
 
 func main() {
@@ -96,7 +98,7 @@ func handleClient(conn net.Conn) {
 
 func Decoder(enCode string) (DeviceData, error) {
 
-	if len(enCode) < 54 {
+	if len(enCode) < 58 {
 		return DeviceData{}, fmt.Errorf("Minimum packet size is 45 Bytes, got %v", len(enCode))
 	}
 
@@ -109,8 +111,10 @@ func Decoder(enCode string) (DeviceData, error) {
 	longitude := (enCode[38:46])
 	latitude := (enCode[46:54])
 
-	if codecId != "08" && codecId != "8E" {
+	altitude := (enCode[54:56])
+	angle := (enCode[56:58])
 
+	if codecId != "08" && codecId != "8E" {
 		return DeviceData{}, fmt.Errorf("Invalid Codec ID, want 0x08 or 0x8E, get %v", codecId)
 	}
 
@@ -119,6 +123,8 @@ func Decoder(enCode string) (DeviceData, error) {
 		Lat:          latitude,
 		Lng:          longitude,
 		NumberOfData: numberOfData,
+		Altitude:     altitude,
+		Angle:        angle,
 	}, nil
 
 }
