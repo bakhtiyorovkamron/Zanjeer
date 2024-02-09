@@ -6,4 +6,4 @@ COPY . .
 
 EXPOSE 1234
 
-CMD [ "go","run","main.go" ]
+CMD [ "go","run","cmd/main.go" ]
