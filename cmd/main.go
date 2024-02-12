@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -77,7 +78,7 @@ func handleClient(conn net.Conn) {
 
 			message := hex.EncodeToString(buffer[:size])
 
-			fmt.Println("Buffer :", string(buffer))
+			// fmt.Println("Buffer :", string(buffer))
 			fmt.Println("----------------------------------------")
 			fmt.Println("Data From:", conn.RemoteAddr().String())
 			fmt.Println("Size of message: ", size)
@@ -88,11 +89,20 @@ func handleClient(conn net.Conn) {
 			case 1:
 				messageTrans[*step](step, imei, message, conn)
 			case 2:
-				_, n, err := readMainData(buffer, size, *imei)
+				data, err := helpers.ParseData(buffer, size, *imei)
 				if err != nil {
-					log.Println("err in readMainData :", err)
+					fmt.Println("ERROR while paring data")
+					break
 				}
-				conn.Write([]byte{0, 0, 0, uint8(n)})
+				for _, v := range data {
+					js, _ := json.MarshalIndent(v, " ", " ")
+					fmt.Println("PURE DATA :", js)
+				}
+				// _, n, err := readMainData(buffer, size, *imei)
+				// if err != nil {
+				// 	log.Println("err in readMainData :", err)
+				// }
+				// conn.Write([]byte{0, 0, 0, uint8(n)})
 			}
 		} else {
 			b := []byte{0} // 0x00 if we decline the message
