@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -79,11 +78,11 @@ func handleClient(conn net.Conn) {
 			message := hex.EncodeToString(buffer[:size])
 
 			// fmt.Println("Buffer :", string(buffer))
-			fmt.Println("----------------------------------------")
-			fmt.Println("Data From:", conn.RemoteAddr().String())
-			fmt.Println("Size of message: ", size)
-			fmt.Println("Message:", message)
-			fmt.Println("Step:", *step)
+			// fmt.Println("----------------------------------------")
+			// fmt.Println("Data From:", conn.RemoteAddr().String())
+			// fmt.Println("Size of message: ", size)
+			// fmt.Println("Message:", message)
+			// fmt.Println("Step:", *step)
 
 			switch *step {
 			case 1:
@@ -95,14 +94,17 @@ func handleClient(conn net.Conn) {
 					break
 				}
 				for _, v := range data {
-					js, _ := json.MarshalIndent(v, " ", " ")
-					fmt.Println("PURE DATA :", js)
+					fmt.Println("IMEI :", v.Imei)
+					fmt.Println("Location :", v.Location)
+					fmt.Println("Time :", v.Time)
+					fmt.Println("Angle :", v.Angle)
+					fmt.Println("Speed :", v.Speed)
 				}
 				// _, n, err := readMainData(buffer, size, *imei)
 				// if err != nil {
 				// 	log.Println("err in readMainData :", err)
 				// }
-				// conn.Write([]byte{0, 0, 0, uint8(n)})
+				conn.Write([]byte{0, 0, 0, uint8(len(data))})
 			}
 		} else {
 			b := []byte{0} // 0x00 if we decline the message
