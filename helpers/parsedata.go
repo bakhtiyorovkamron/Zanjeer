@@ -85,8 +85,8 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 			break
 		}
 
-		fmt.Println("Timestamp:", timestamp)
-		fmt.Println("Longitude:", longitude, "Latitude:", latitude)
+		// fmt.Println("Timestamp:", timestamp)
+		// fmt.Println("Longitude:", longitude, "Latitude:", latitude)
 
 		i++
 	}
