@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/hex"
 	"fmt"
 	"log"
@@ -10,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Projects/Zanjeer/helpers"
+	"github.com/Projects/Zanjeer/models"
 )
 
 type DeviceData struct {
@@ -51,59 +53,79 @@ func main() {
 func handleClient(conn net.Conn) {
 	defer conn.Close()
 
+	var messageTrans = map[int]func(step *int, imei *string, msg string, conn net.Conn){}
+
+	messageTrans[1] = takeImei
+
 	// Create a buffer to read data into
 	buffer := make([]byte, 1024)
+	var (
+		imeiTaken bool = false
+		step      *int
+		imei      *string
+	)
 
 	for {
 		// Read data from the client
-		n, err := conn.Read(buffer)
+		size, err := conn.Read(buffer)
 		if err != nil {
 			fmt.Println("Error:", err)
-			return
+			break
 		}
-		_ = n
-		fmt.Println(string(buffer[:n]))
-		encodedString := hex.EncodeToString(buffer)
-		deviceInfo, err := Decoder(encodedString)
-		if err == nil {
-			Post(DeviceData{
-				IMEI: "359633103869421",
-				Lat:  DecToLocation(HexToDec(deviceInfo.Lat)),
-				Lng:  DecToLocation(HexToDec(deviceInfo.Lng)),
-			})
-			// Post(DecToLocation(HexToDec(deviceInfo.Lat)), DecToLocation(HexToDec(deviceInfo.Lng)))
 
-			fmt.Println("##############################################")
-			hexToTime, _ := hexToTime(deviceInfo.TimeDate)
-			// fmt.Println("encodedString :", encodedString)
-			fmt.Println("Time:", hexToTime)
-			fmt.Println("Device Info :", time.Now())
-			fmt.Println("Time:", deviceInfo.TimeDate)
-			fmt.Println("Longitude:", deviceInfo.Lng)
-			fmt.Println("Latitude:", deviceInfo.Lat)
-			fmt.Println("NUmber of data:", deviceInfo.NumberOfData)
-			fmt.Println("##############################################")
-			fmt.Println()
-			// fmt.Println
-			decodedByteArray, err := hex.DecodeString("000000" + deviceInfo.NumberOfData)
+		if imeiTaken {
 
-			if err != nil {
-				fmt.Println("Unable to convert hex to byte. ", err)
+			message := hex.EncodeToString(buffer[:size])
+
+			fmt.Println("----------------------------------------")
+			fmt.Println("Data From:", conn.RemoteAddr().String())
+			fmt.Println("Size of message: ", size)
+			fmt.Println("Message:", message)
+			fmt.Println("Step:", step)
+
+			switch *step {
+			case 1:
+				messageTrans[*step](step, imei, message, conn)
+			case 2:
+				_, n, err := readMainData(buffer, size, *imei)
+				if err != nil {
+					log.Println("err in readMainData :", err)
+				}
+				conn.Write([]byte{0, 0, 0, uint8(n)})
 			}
-			fmt.Println("Number of data:", decodedByteArray)
-			conn.Write(decodedByteArray)
-			fmt.Println("sent ", decodedByteArray)
-			// conn.Write([]byte{0x13})
-
-			return
+		} else {
+			b := []byte{0} // 0x00 if we decline the message
+			conn.Write(b)
+			break
 		}
-
-		fmt.Println(string(buffer[:n]))
-		nullOne := []byte{0x01}
-		conn.Write(nullOne)
-		fmt.Println("sent 01 :", nullOne)
 
 	}
+}
+
+func readMainData(data []byte, size int, imei string) (elements []models.Record, n int, err error) {
+
+	reader := bytes.NewBuffer(data)
+
+	zeroBytes := reader.Next(4)
+	dataFieldLength := reader.Next(4)
+	codecId := reader.Next(1)
+	numberOfData := reader.Next(1)
+
+	fmt.Println("zero bytes :", zeroBytes)
+	fmt.Println("dataField length :", dataFieldLength)
+	fmt.Println("codedId :", codecId)
+
+	fmt.Println("====================================================")
+	fmt.Println()
+
+	return elements, int(len(numberOfData)), nil
+}
+
+func takeImei(step *int, imei *string, msg string, conn net.Conn) {
+	firstReply := []byte{1}
+	*step = 2
+	*imei = msg
+	conn.Write(firstReply)
 }
 
 func Decoder(enCode string) (DeviceData, error) {
@@ -138,6 +160,7 @@ func Decoder(enCode string) (DeviceData, error) {
 	}, nil
 
 }
+
 func DecToLocation(dec int64) string {
 	if dec <= 0 {
 		return ""
