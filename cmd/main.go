@@ -77,11 +77,12 @@ func handleClient(conn net.Conn) {
 
 			message := hex.EncodeToString(buffer[:size])
 
+			fmt.Println("Buffer :", string(buffer))
 			fmt.Println("----------------------------------------")
 			fmt.Println("Data From:", conn.RemoteAddr().String())
 			fmt.Println("Size of message: ", size)
 			fmt.Println("Message:", message)
-			fmt.Println("Step:", step)
+			fmt.Println("Step:", *step)
 
 			switch *step {
 			case 1:
