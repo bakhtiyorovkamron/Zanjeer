@@ -34,7 +34,6 @@ func main() {
 		return
 	}
 	defer listener.Close()
-
 	fmt.Println("Server is listening on port " + port)
 
 	for {
@@ -60,8 +59,8 @@ func handleClient(conn net.Conn) {
 	// Create a buffer to read data into
 	buffer := make([]byte, 1024)
 	var (
-		imeiTaken bool = true
-		step      *int = new(int)
+		imeiTaken bool    = true
+		step      *int    = new(int)
 		imei      *string = new(string)
 	)
 	*step = 1
