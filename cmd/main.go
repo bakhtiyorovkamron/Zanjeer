@@ -93,13 +93,13 @@ func handleClient(conn net.Conn) {
 					fmt.Println("ERROR while paring data")
 					break
 				}
-				for _, v := range data {
-					fmt.Println("IMEI :", v.Imei)
-					fmt.Println("Location :", v.Location)
-					fmt.Println("Time :", v.Time)
-					fmt.Println("Angle :", v.Angle)
-					fmt.Println("Speed :", v.Speed)
-				}
+				// for _, v := range data {
+				// 	fmt.Println("IMEI :", v.Imei)
+				// 	fmt.Println("Location :", v.Location)
+				// 	fmt.Println("Time :", v.Time)
+				// 	fmt.Println("Angle :", v.Angle)
+				// 	fmt.Println("Speed :", v.Speed)
+				// }
 				// _, n, err := readMainData(buffer, size, *imei)
 				// if err != nil {
 				// 	log.Println("err in readMainData :", err)
