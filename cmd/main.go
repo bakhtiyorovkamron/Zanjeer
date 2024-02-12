@@ -60,7 +60,7 @@ func handleClient(conn net.Conn) {
 	// Create a buffer to read data into
 	buffer := make([]byte, 1024)
 	var (
-		imeiTaken bool = false
+		imeiTaken bool = true
 		step      *int
 		imei      *string
 	)
