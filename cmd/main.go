@@ -61,10 +61,11 @@ func handleClient(conn net.Conn) {
 	buffer := make([]byte, 1024)
 	var (
 		imeiTaken bool = true
-		step      *int
-		imei      *string
+		step      *int = new(int)
+		imei      *string = new(string)
 	)
 	*step = 1
+
 	for {
 		// Read data from the client
 		size, err := conn.Read(buffer)
