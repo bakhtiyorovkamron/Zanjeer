@@ -22,8 +22,11 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 
 	var i int8 = 0
 	for i < recordNumber {
-		timestamp, err := streamToTime(reader.Next(8)) // Timestamp
-		reader.Next(1)                                 // Priority
+		timestamp, err := streamToTime(reader.Next(8))
+		if err != nil {
+			return elements, fmt.Errorf("")
+		} // Timestamp
+		reader.Next(1) // Priority
 
 		// GPS Element
 		longitudeInt, err := streamToInt32(reader.Next(4)) // Longitude
@@ -42,8 +45,7 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 		speed, err := streamToInt16(reader.Next(2)) // Speed
 
 		if err != nil {
-			fmt.Println("Error while reading GPS Element")
-			break
+			return elements, fmt.Errorf("")
 		}
 
 		elements[i] = models.Record{
@@ -86,8 +88,7 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 		}
 
 		if err != nil {
-			fmt.Println("Error while reading IO Elements")
-			break
+			return elements, fmt.Errorf("Error while reading IO Elements")
 		}
 
 		// fmt.Println("Timestamp:", timestamp)
