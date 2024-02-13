@@ -78,6 +78,10 @@ func handleClient(conn net.Conn) {
 			message := hex.EncodeToString(buffer[:size])
 
 			fmt.Println("Buffer :", string(buffer))
+
+			if buffer[1] == 0x0f {
+				fmt.Println("FOUND IMEI")
+			}
 			// fmt.Println("----------------------------------------")
 			// fmt.Println("Data From:", conn.RemoteAddr().String())
 			// fmt.Println("Size of message: ", size)
