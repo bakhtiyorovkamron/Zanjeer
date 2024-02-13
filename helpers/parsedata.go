@@ -17,18 +17,18 @@ func Imei(data []byte) bool {
 	return false
 }
 
-func ParseData(data []byte, size int, imei string) (elements []models.Record, err error) {
+func ParseData(data []byte, size int, imei string) ([]models.Record, error) {
 	reader := bytes.NewBuffer(data)
 	// fmt.Println("Reader Size:", reader.Len())
 
 	// Header
-	reader.Next(4)                                    // 4 Zero Bytes
-	dataLength, err := streamToInt32(reader.Next(4))  // Header
-	reader.Next(1)                                    // CodecID
-	recordNumber, err := streamToInt8(reader.Next(1)) // Number of Records
+	reader.Next(4)                                  // 4 Zero Bytes
+	dataLength, _ := streamToInt32(reader.Next(4))  // Header
+	reader.Next(1)                                  // CodecID
+	recordNumber, _ := streamToInt8(reader.Next(1)) // Number of Records
 	fmt.Println("Length of data:", dataLength)
 
-	elements = make([]models.Record, recordNumber)
+	elements := make([]models.Record, recordNumber)
 
 	var i int8 = 0
 	// fmt.Println("Record Number:", recordNumber)
@@ -65,7 +65,7 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 		// fmt.Println("longitudeInt :", longitudeInt)
 		// fmt.Println("latitudeInt :", latitudeInt)
 
-		elements[i] = models.Record{
+		elements = append(elements, models.Record{
 			Imei: imei,
 			Location: models.Location{Type: "Point",
 				Coordinates: []int32{longitudeInt, latitudeInt}},
@@ -74,7 +74,17 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 			Speed:     speed,
 			Longitude: longitudeInt,
 			Latitude:  latitudeInt,
-		}
+		})
+		// elements[i] = models.Record{
+		// 	Imei: imei,
+		// 	Location: models.Location{Type: "Point",
+		// 		Coordinates: []int32{longitudeInt, latitudeInt}},
+		// 	Time:      timestamp,
+		// 	Angle:     angle,
+		// 	Speed:     speed,
+		// 	Longitude: longitudeInt,
+		// 	Latitude:  latitudeInt,
+		// }
 
 		// IO Events Elements
 
@@ -85,7 +95,7 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 		for stage <= 4 {
 			stageElements, err := streamToInt8(reader.Next(1))
 			if err != nil {
-				break
+				// break
 			}
 
 			var j int8 = 0
@@ -108,7 +118,7 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 		}
 
 		if err != nil {
-			return elements, fmt.Errorf("Error while reading IO Elements")
+			// return elements, fmt.Errorf("Error while reading IO Elements")
 		}
 
 		// fmt.Println("Timestamp:", timestamp)
@@ -119,8 +129,8 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 
 	// Once finished with the records we read the Record Number and the CRC
 
-	_, err = streamToInt8(reader.Next(1))  // Number of Records
-	_, err = streamToInt32(reader.Next(4)) // CRC
+	_, _ = streamToInt8(reader.Next(1))  // Number of Records
+	_, _ = streamToInt32(reader.Next(4)) // CRC
 
-	return
+	return elements, nil
 }
