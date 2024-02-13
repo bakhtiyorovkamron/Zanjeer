@@ -80,7 +80,6 @@ func handleClient(conn net.Conn) {
 			switch *step {
 			case 1:
 				messageTrans[*step](step, imei, message, conn)
-				break
 			case 2:
 				data, err := helpers.ParseData(buffer, size, *imei)
 				if err != nil {
