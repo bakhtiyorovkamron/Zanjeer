@@ -7,8 +7,11 @@ import (
 	"github.com/Projects/Zanjeer/models"
 )
 
-func Imei(data string) bool {
-	if string(data[0:4]) == "000f" {
+func Imei(data []byte) bool {
+	if len(data) < 15 {
+		return false
+	}
+	if data[1] == 0x0f {
 		return true
 	}
 	return false
