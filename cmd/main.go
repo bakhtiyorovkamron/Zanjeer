@@ -93,16 +93,6 @@ func handleClient(conn net.Conn) {
 				}
 				d, _ := json.MarshalIndent(data, "", " ")
 				fmt.Println(string(d))
-				// for i, v := range data {
-				// 	fmt.Println("Record Number :", i)
-				// 	fmt.Println("IMEI :", v.Imei)
-				// 	fmt.Println("Location :", v.Location)
-				// 	fmt.Println("Time :", v.Time)
-				// 	fmt.Println("Angle :", v.Angle)
-				// 	fmt.Println("Speed :", v.Speed)
-				// }
-				// fmt.Println("Data Parsed Successfully")
-				// fmt.Print("\n\n")
 
 				conn.Write([]byte{0, 0, 0, uint8(len(data))})
 			}
