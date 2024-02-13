@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -90,6 +91,8 @@ func handleClient(conn net.Conn) {
 					// fmt.Println("ERROR while paring data :", err)
 					break
 				}
+				d, _ := json.MarshalIndent(data, "", " ")
+				fmt.Println(string(d))
 				// for i, v := range data {
 				// 	fmt.Println("Record Number :", i)
 				// 	fmt.Println("IMEI :", v.Imei)

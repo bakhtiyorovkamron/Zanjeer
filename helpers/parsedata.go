@@ -60,18 +60,21 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 		reader.Next(1)                              // Satellites
 		speed, err := streamToInt16(reader.Next(2)) // Speed
 		if err != nil {
-			return elements, fmt.Errorf("angle, err = streamToInt16(reader.Next(2))")
+			// return elements, fmt.Errorf("angle, err = streamToInt16(reader.Next(2))")
 		}
-		fmt.Println("longitudeInt :", longitudeInt)
-		fmt.Println("latitudeInt :", latitudeInt)
+		// fmt.Println("longitudeInt :", longitudeInt)
+		// fmt.Println("latitudeInt :", latitudeInt)
 
 		elements[i] = models.Record{
 			Imei: imei,
 			Location: models.Location{Type: "Point",
 				Coordinates: []int32{longitudeInt, latitudeInt}},
-			Time:  timestamp,
-			Angle: angle,
-			Speed: speed}
+			Time:      timestamp,
+			Angle:     angle,
+			Speed:     speed,
+			Longitude: longitudeInt,
+			Latitude:  latitudeInt,
+		}
 
 		// IO Events Elements
 
