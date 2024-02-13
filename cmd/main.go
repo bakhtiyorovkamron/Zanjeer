@@ -91,6 +91,8 @@ func handleClient(conn net.Conn) {
 					// fmt.Println("ERROR while paring data :", err)
 					break
 				}
+
+				fmt.Println(time.Now())
 				fmt.Println("uint8(len(data)) :", uint8(len(data)))
 				d, _ := json.MarshalIndent(data, "", " ")
 				fmt.Println(string(d))
