@@ -11,10 +11,10 @@ import (
 
 func Write(data []byte) {
 
-	_ = ioutil.WriteFile("../data/fmb_location.json", data, 0644)
+	_ = ioutil.WriteFile("./data/fmb_location.json", data, 0644)
 }
 func Read() []models.Record {
-	jsonFile, err := os.Open("../data/fmb_location.json")
+	jsonFile, err := os.Open("./data/fmb_location.json")
 	if err != nil {
 		fmt.Println("error while reading from json")
 	}
