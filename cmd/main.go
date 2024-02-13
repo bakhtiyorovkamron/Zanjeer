@@ -78,7 +78,7 @@ func handleClient(conn net.Conn) {
 			message := hex.EncodeToString(buffer[:size])
 
 			if helpers.Imei(buffer) {
-				*imei = string(buffer[1:16])
+				*imei = string(buffer[1:17])
 			}
 
 			switch *step {
