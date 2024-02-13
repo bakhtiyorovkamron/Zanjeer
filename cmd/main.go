@@ -81,7 +81,7 @@ func handleClient(conn net.Conn) {
 			// fmt.Println("----------------------------------------")
 			// fmt.Println("Data From:", conn.RemoteAddr().String())
 			// fmt.Println("Size of message: ", size)
-			if helpers.Imei(buffer[:size]) {
+			if helpers.Imei(message) {
 				fmt.Println("IMEI:", string(buffer[:size]))
 			}
 			fmt.Println("Message:", message)
