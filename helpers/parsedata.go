@@ -24,7 +24,7 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 	for i < recordNumber {
 		timestamp, err := streamToTime(reader.Next(8))
 		if err != nil {
-			return elements, fmt.Errorf("")
+			return elements, fmt.Errorf("timestamp, err := streamToTime(reader.Next(8))")
 		} // Timestamp
 		reader.Next(1) // Priority
 
@@ -41,11 +41,13 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 
 		reader.Next(2)                              // Altitude
 		angle, err := streamToInt16(reader.Next(2)) // Angle
+		if err != nil {
+			return elements, fmt.Errorf("angle, err := streamToInt16(reader.Next(2))")
+		}
 		reader.Next(1)                              // Satellites
 		speed, err := streamToInt16(reader.Next(2)) // Speed
-
 		if err != nil {
-			return elements, fmt.Errorf("")
+			return elements, fmt.Errorf("angle, err = streamToInt16(reader.Next(2))")
 		}
 
 		elements[i] = models.Record{
