@@ -65,18 +65,17 @@ func ParseData(data []byte, size int, imei string) ([]models.Record, error) {
 		// fmt.Println("longitudeInt :", longitudeInt)
 		// fmt.Println("latitudeInt :", latitudeInt)
 
-		if longitudeInt != 0 && latitudeInt != 0 {
-			elements = append(elements, models.Record{
-				Imei: imei,
-				Location: models.Location{Type: "Point",
-					Coordinates: []int32{longitudeInt, latitudeInt}},
-				Time:      timestamp,
-				Angle:     angle,
-				Speed:     speed,
-				Longitude: longitudeInt,
-				Latitude:  latitudeInt,
-			})
-		}
+		elements = append(elements, models.Record{
+			Imei: imei,
+			Location: models.Location{Type: "Point",
+				Coordinates: []int32{longitudeInt, latitudeInt}},
+			Time:      timestamp,
+			Angle:     angle,
+			Speed:     speed,
+			Longitude: longitudeInt,
+			Latitude:  latitudeInt,
+		})
+
 		// elements[i] = models.Record{
 		// 	Imei: imei,
 		// 	Location: models.Location{Type: "Point",
