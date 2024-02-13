@@ -30,7 +30,7 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 
 		// GPS Element
 		longitudeInt, err := streamToInt32(reader.Next(4)) // Longitude
-		fmt.Println("#####################")
+		fmt.Println(i, " : #####################")
 		fmt.Println("longitudeInt :", longitudeInt)
 		longitude := float64(longitudeInt) // PRECISION
 		latitudeInt, err := streamToInt32(reader.Next(4))
