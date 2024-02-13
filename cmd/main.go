@@ -77,13 +77,9 @@ func handleClient(conn net.Conn) {
 
 			message := hex.EncodeToString(buffer[:size])
 
-			// fmt.Println("----------------------------------------")
-			// fmt.Println("Data From:", conn.RemoteAddr().String())
-			// fmt.Println("Size of message: ", size)
 			if helpers.Imei(buffer) {
-				fmt.Println("IMEI:", string(buffer[:size]))
+				*imei = string(buffer[:size])
 			}
-			// fmt.Println("Step:", *step)
 
 			switch *step {
 			case 1:
@@ -94,17 +90,17 @@ func handleClient(conn net.Conn) {
 					fmt.Println("ERROR while paring data :", err)
 					break
 				}
-				// for _, v := range data {
-				// 	fmt.Println("IMEI :", v.Imei)
-				// 	fmt.Println("Location :", v.Location)
-				// 	fmt.Println("Time :", v.Time)
-				// 	fmt.Println("Angle :", v.Angle)
-				// 	fmt.Println("Speed :", v.Speed)
-				// }
-				// _, n, err := readMainData(buffer, size, *imei)
-				// if err != nil {
-				// 	log.Println("err in readMainData :", err)
-				// }
+				for i, v := range data {
+					fmt.Println("Record Number :", i)
+					fmt.Println("IMEI :", v.Imei)
+					fmt.Println("Location :", v.Location)
+					fmt.Println("Time :", v.Time)
+					fmt.Println("Angle :", v.Angle)
+					fmt.Println("Speed :", v.Speed)
+				}
+				fmt.Println("Data Parsed Successfully")
+				fmt.Print("\n\n")
+
 				conn.Write([]byte{0, 0, 0, uint8(len(data))})
 			}
 		} else {
