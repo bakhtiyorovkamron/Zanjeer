@@ -42,12 +42,12 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 		longitudeInt, err := streamToInt32(reader.Next(4)) // Longitude
 		// fmt.Println(i, " : #####################")
 		// fmt.Println("longitudeInt :", longitudeInt)
-		longitude := float64(longitudeInt) // PRECISION
+		// longitude := float64(longitudeInt) // PRECISION
 		latitudeInt, err := streamToInt32(reader.Next(4))
 		// fmt.Println("latitudeInt :", latitudeInt) // Latitude
 		// fmt.Println("#####################")
 		fmt.Println()
-		latitude := float64(latitudeInt) // PRECISION
+		// latitude := float64(latitudeInt) // PRECISION
 
 		reader.Next(2)                              // Altitude
 		angle, err := streamToInt16(reader.Next(2)) // Angle
@@ -63,7 +63,7 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 		elements[i] = models.Record{
 			Imei: imei,
 			Location: models.Location{Type: "Point",
-				Coordinates: []float64{longitude, latitude}},
+				Coordinates: []int32{longitudeInt, latitudeInt}},
 			Time:  timestamp,
 			Angle: angle,
 			Speed: speed}

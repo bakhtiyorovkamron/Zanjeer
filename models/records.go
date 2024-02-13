@@ -11,5 +11,5 @@ type Record struct {
 }
 type Location struct {
 	Type        string
-	Coordinates []float64
+	Coordinates []int32
 }
