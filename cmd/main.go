@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Projects/Zanjeer/db"
 	"github.com/Projects/Zanjeer/helpers"
 	"github.com/Projects/Zanjeer/models"
 )
@@ -91,6 +92,11 @@ func handleClient(conn net.Conn) {
 					// fmt.Println("ERROR while paring data :", err)
 					break
 				}
+
+				locations := db.Read()
+				locations = append(locations, data...)
+				file, _ := json.MarshalIndent(locations, "", " ")
+				db.Write(file)
 
 				fmt.Println(time.Now())
 				fmt.Println("uint8(len(data)) :", uint8(len(data)))
