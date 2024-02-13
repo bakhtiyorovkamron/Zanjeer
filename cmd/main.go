@@ -77,13 +77,10 @@ func handleClient(conn net.Conn) {
 
 			message := hex.EncodeToString(buffer[:size])
 
-			if helpers.Imei(buffer) {
-				*imei = string(buffer[:size])
-			}
-
 			switch *step {
 			case 1:
 				messageTrans[*step](step, imei, message, conn)
+				break
 			case 2:
 				data, err := helpers.ParseData(buffer, size, *imei)
 				if err != nil {
@@ -134,7 +131,6 @@ func readMainData(data []byte, size int, imei string) (elements []models.Record,
 func takeImei(step *int, imei *string, msg string, conn net.Conn) {
 	firstReply := []byte{1}
 	*step = 2
-	*imei = msg
 	conn.Write(firstReply)
 }
 
