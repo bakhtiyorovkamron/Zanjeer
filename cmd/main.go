@@ -77,6 +77,13 @@ func handleClient(conn net.Conn) {
 
 			message := hex.EncodeToString(buffer[:size])
 
+			if helpers.Imei(buffer) {
+				*imei = string(buffer[1:16])
+			} else {
+				fmt.Println("Invalid IMEI")
+				break
+			}
+
 			switch *step {
 			case 1:
 				messageTrans[*step](step, imei, message, conn)
