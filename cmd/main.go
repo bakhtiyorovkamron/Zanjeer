@@ -81,7 +81,7 @@ func handleClient(conn net.Conn) {
 			// fmt.Println("----------------------------------------")
 			// fmt.Println("Data From:", conn.RemoteAddr().String())
 			// fmt.Println("Size of message: ", size)
-			// fmt.Println("Message:", message)
+			fmt.Println("Message:", message)
 			// fmt.Println("Step:", *step)
 
 			switch *step {
