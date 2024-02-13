@@ -79,9 +79,6 @@ func handleClient(conn net.Conn) {
 
 			if helpers.Imei(buffer) {
 				*imei = string(buffer[1:16])
-			} else {
-				fmt.Println("Invalid IMEI")
-				break
 			}
 
 			switch *step {
