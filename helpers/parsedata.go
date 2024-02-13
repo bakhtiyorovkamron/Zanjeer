@@ -31,9 +31,9 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 	elements = make([]models.Record, recordNumber)
 
 	var i int8 = 0
-	fmt.Println("Record Number:", recordNumber)
+	// fmt.Println("Record Number:", recordNumber)
 	for i < recordNumber {
-		fmt.Println("Record Number:", i)
+		// fmt.Println("Record Number:", i)
 		timestamp, err := streamToTime(reader.Next(8))
 		if err != nil {
 			// fmt.Println("time :", reader.Next(8))
@@ -44,10 +44,10 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 		// GPS Element
 		longitudeInt, err := streamToInt32(reader.Next(4)) // Longitude
 		// fmt.Println(i, " : #####################")
-		fmt.Println("longitudeInt :", longitudeInt)
+		// fmt.Println("longitudeInt :", longitudeInt)
 		// longitude := float64(longitudeInt) // PRECISION
 		latitudeInt, err := streamToInt32(reader.Next(4))
-		fmt.Println("latitudeInt :", latitudeInt) // Latitude
+		// fmt.Println("latitudeInt :", latitudeInt) // Latitude
 		// fmt.Println("#####################")
 		fmt.Println()
 		// latitude := float64(latitudeInt) // PRECISION

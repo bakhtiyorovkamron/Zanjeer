@@ -87,7 +87,7 @@ func handleClient(conn net.Conn) {
 			case 2:
 				data, err := helpers.ParseData(buffer, size, *imei)
 				if err != nil {
-					fmt.Println("ERROR while paring data :", err)
+					// fmt.Println("ERROR while paring data :", err)
 					break
 				}
 				for i, v := range data {
