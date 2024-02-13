@@ -14,6 +14,7 @@ import (
 	"github.com/Projects/Zanjeer/db"
 	"github.com/Projects/Zanjeer/helpers"
 	"github.com/Projects/Zanjeer/models"
+	"github.com/Projects/Zanjeer/notification"
 )
 
 type DeviceData struct {
@@ -29,6 +30,7 @@ type DeviceData struct {
 const port = "1234"
 
 func main() {
+
 	// Listen for incoming connections
 	listener, err := net.Listen("tcp", "0.0.0.0:"+port)
 	if err != nil {
@@ -102,6 +104,7 @@ func handleClient(conn net.Conn) {
 				fmt.Println("uint8(len(data)) :", uint8(len(data)))
 				d, _ := json.MarshalIndent(data, "", " ")
 				fmt.Println(string(d))
+				notification.Send(string(d))
 
 				conn.Write([]byte{0, 0, 0, uint8(len(data))})
 			}
