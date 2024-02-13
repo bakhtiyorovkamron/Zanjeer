@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -91,8 +90,9 @@ func handleClient(conn net.Conn) {
 					// fmt.Println("ERROR while paring data :", err)
 					break
 				}
-				d, _ := json.MarshalIndent(data, "", " ")
-				fmt.Println(string(d))
+				fmt.Println("uint8(len(data)) :", uint8(len(data)))
+				// d, _ := json.MarshalIndent(data, "", " ")
+				// fmt.Println(string(d))
 
 				conn.Write([]byte{0, 0, 0, uint8(len(data))})
 			}
