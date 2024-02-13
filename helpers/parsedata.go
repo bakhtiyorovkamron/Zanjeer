@@ -7,6 +7,13 @@ import (
 	"github.com/Projects/Zanjeer/models"
 )
 
+func Imei(data []byte) bool {
+	if data[0] == 0x0f {
+		return true
+	}
+	return false
+}
+
 func ParseData(data []byte, size int, imei string) (elements []models.Record, err error) {
 	reader := bytes.NewBuffer(data)
 	// fmt.Println("Reader Size:", reader.Len())
