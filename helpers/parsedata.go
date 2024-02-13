@@ -7,8 +7,8 @@ import (
 	"github.com/Projects/Zanjeer/models"
 )
 
-func Imei(data []byte) bool {
-	if data[0] == 0x0f {
+func Imei(data string) bool {
+	if string(data[0:4]) == "000f" {
 		return true
 	}
 	return false
