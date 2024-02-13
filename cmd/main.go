@@ -90,16 +90,16 @@ func handleClient(conn net.Conn) {
 					// fmt.Println("ERROR while paring data :", err)
 					break
 				}
-				for i, v := range data {
-					fmt.Println("Record Number :", i)
-					fmt.Println("IMEI :", v.Imei)
-					fmt.Println("Location :", v.Location)
-					fmt.Println("Time :", v.Time)
-					fmt.Println("Angle :", v.Angle)
-					fmt.Println("Speed :", v.Speed)
-				}
-				fmt.Println("Data Parsed Successfully")
-				fmt.Print("\n\n")
+				// for i, v := range data {
+				// 	fmt.Println("Record Number :", i)
+				// 	fmt.Println("IMEI :", v.Imei)
+				// 	fmt.Println("Location :", v.Location)
+				// 	fmt.Println("Time :", v.Time)
+				// 	fmt.Println("Angle :", v.Angle)
+				// 	fmt.Println("Speed :", v.Speed)
+				// }
+				// fmt.Println("Data Parsed Successfully")
+				// fmt.Print("\n\n")
 
 				conn.Write([]byte{0, 0, 0, uint8(len(data))})
 			}

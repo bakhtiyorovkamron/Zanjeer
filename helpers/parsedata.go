@@ -62,6 +62,8 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 		if err != nil {
 			return elements, fmt.Errorf("angle, err = streamToInt16(reader.Next(2))")
 		}
+		fmt.Println("longitudeInt :", longitudeInt)
+		fmt.Println("latitudeInt :", latitudeInt)
 
 		elements[i] = models.Record{
 			Imei: imei,
