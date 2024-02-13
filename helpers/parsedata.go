@@ -31,9 +31,12 @@ func ParseData(data []byte, size int, imei string) (elements []models.Record, er
 	elements = make([]models.Record, recordNumber)
 
 	var i int8 = 0
+	fmt.Println("Record Number:", recordNumber)
 	for i < recordNumber {
+		fmt.Println("Record Number:", i)
 		timestamp, err := streamToTime(reader.Next(8))
 		if err != nil {
+			fmt.Println("time :", reader.Next(8))
 			return elements, fmt.Errorf("timestamp, err := streamToTime(reader.Next(8))")
 		} // Timestamp
 		reader.Next(1) // Priority
