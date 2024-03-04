@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -13,6 +14,7 @@ import (
 	"github.com/Projects/Zanjeer/config"
 	"github.com/Projects/Zanjeer/helpers"
 	"github.com/Projects/Zanjeer/models"
+	"github.com/Projects/Zanjeer/notification"
 	"github.com/Projects/Zanjeer/pkg/db"
 	"github.com/Projects/Zanjeer/pkg/logger"
 	"github.com/Projects/Zanjeer/storage"
@@ -109,14 +111,15 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 					// fmt.Println("ERROR while paring data :", err)
 					break
 				}
-				err = pg.Postgres().SetLocation(data)
-
-				if err != nil {
-					log.Error("ERROR while setting location:", err)
+				if pg.Postgres().SetLocation(data) != nil {
+					fmt.Println("ERROR while Setting location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", err)
 				}
 
-				// d, _ := json.MarshalIndent(data, "", " ")
-				// fmt.Println(string(d))
+				fmt.Println(time.Now())
+				fmt.Println("uint8(len(data)) :", uint8(len(data)))
+				d, _ := json.MarshalIndent(data, "", " ")
+				fmt.Println(string(d))
+				notification.Send(string(d))
 
 				conn.Write([]byte{0, 0, 0, uint8(len(data))})
 			}

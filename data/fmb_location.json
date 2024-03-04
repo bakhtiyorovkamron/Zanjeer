@@ -1,0 +1,14 @@
+[
+ {
+  "Imei": "fuckyou",
+  "Location": {
+   "Type": "",
+   "Coordinates": null
+  },
+  "Time": "0001-01-01T00:00:00Z",
+  "Angle": 0,
+  "Speed": 0,
+  "Longitude": 0,
+  "Latitude": 0
+ }
+]
