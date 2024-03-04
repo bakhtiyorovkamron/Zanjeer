@@ -10,8 +10,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Projects/Zanjeer/config"
 	"github.com/Projects/Zanjeer/helpers"
 	"github.com/Projects/Zanjeer/models"
+	"github.com/Projects/Zanjeer/pkg/db"
+	"github.com/Projects/Zanjeer/pkg/logger"
+	"github.com/Projects/Zanjeer/storage"
 )
 
 type DeviceData struct {
@@ -27,6 +31,18 @@ type DeviceData struct {
 const port = "1234"
 
 func main() {
+
+	cfg := config.Load()
+
+	logger := logger.New(cfg.LogLevel)
+
+	db, err := db.New(cfg)
+	if err != nil {
+		logger.Error("Error while connecting to database", err)
+	} else {
+		logger.Info("Successfully connected to database")
+	}
+
 	// Listen for incoming connections
 	listener, err := net.Listen("tcp", "0.0.0.0:"+port)
 	if err != nil {
@@ -45,11 +61,14 @@ func main() {
 		}
 
 		// Handle client connection in a goroutine
-		go handleClient(conn)
+		go handleClient(conn, db, logger, cfg)
 	}
 }
 
-func handleClient(conn net.Conn) {
+func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config.Config) {
+
+	pg := storage.New(db, log, cfg)
+
 	defer conn.Close()
 
 	var messageTrans = map[int]func(step *int, imei *string, msg string, conn net.Conn){}
@@ -90,7 +109,12 @@ func handleClient(conn net.Conn) {
 					// fmt.Println("ERROR while paring data :", err)
 					break
 				}
-				fmt.Println("uint8(len(data)) :", uint8(len(data)))
+				err = pg.Postgres().SetLocation(data)
+
+				if err != nil {
+					log.Error("ERROR while setting location:", err)
+				}
+
 				// d, _ := json.MarshalIndent(data, "", " ")
 				// fmt.Println(string(d))
 
