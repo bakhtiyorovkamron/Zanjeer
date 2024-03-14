@@ -1,9 +1,7 @@
 package main
 
 import (
-	"bytes"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -13,8 +11,6 @@ import (
 
 	"github.com/Projects/Zanjeer/config"
 	"github.com/Projects/Zanjeer/helpers"
-	"github.com/Projects/Zanjeer/models"
-	"github.com/Projects/Zanjeer/notification"
 	"github.com/Projects/Zanjeer/pkg/db"
 	"github.com/Projects/Zanjeer/pkg/logger"
 	"github.com/Projects/Zanjeer/storage"
@@ -115,11 +111,10 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 					fmt.Println("ERROR while Setting location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", err)
 				}
 
-				fmt.Println(time.Now())
-				fmt.Println("uint8(len(data)) :", uint8(len(data)))
-				d, _ := json.MarshalIndent(data, "", " ")
-				fmt.Println(string(d))
-				notification.Send(string(d))
+				fmt.Println("Length of data :", len(data))
+				// d, _ := json.MarshalIndent(data, "", " ")
+				// fmt.Println(string(d))
+				// notification.Send(string(d))
 
 				conn.Write([]byte{0, 0, 0, uint8(len(data))})
 			}
@@ -130,25 +125,6 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 		}
 
 	}
-}
-
-func readMainData(data []byte, size int, imei string) (elements []models.Record, n int, err error) {
-
-	reader := bytes.NewBuffer(data)
-
-	zeroBytes := reader.Next(4)
-	dataFieldLength := reader.Next(4)
-	codecId := reader.Next(1)
-	numberOfData := reader.Next(1)
-
-	fmt.Println("zero bytes :", zeroBytes)
-	fmt.Println("dataField length :", dataFieldLength)
-	fmt.Println("codedId :", codecId)
-
-	fmt.Println("====================================================")
-	fmt.Println()
-
-	return elements, int(len(numberOfData)), nil
 }
 
 func takeImei(step *int, imei *string, msg string, conn net.Conn) {

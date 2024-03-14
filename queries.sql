@@ -7,7 +7,6 @@
 	as $$
 	begin
 
-	delete from devices_location where devices_location.imei=device_imei;
 
 	insert into devices_location(id,imei,longitude,latitiude) values(gen_random_uuid(),device_imei,longitude,latitude);
 

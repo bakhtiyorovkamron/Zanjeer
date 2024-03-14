@@ -22,16 +22,14 @@ func ParseData(data []byte, size int, imei string) ([]models.Record, error) {
 	// fmt.Println("Reader Size:", reader.Len())
 
 	// Header
-	reader.Next(4)                                  // 4 Zero Bytes
-	dataLength, _ := streamToInt32(reader.Next(4))  // Header
+	reader.Next(4) // 4 Zero Bytes
+	// dataLength, _ := streamToInt32(reader.Next(4))  // Header
 	reader.Next(1)                                  // CodecID
 	recordNumber, _ := streamToInt8(reader.Next(1)) // Number of Records
-	fmt.Println("Length of data:", dataLength)
 
 	elements := make([]models.Record, recordNumber)
 
 	var i int8 = 0
-	fmt.Println("Record Number:", recordNumber)
 	for i < recordNumber {
 		// fmt.Println("Record Number:", i)
 		timestamp, err := streamToTime(reader.Next(8))
