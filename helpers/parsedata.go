@@ -49,7 +49,6 @@ func ParseData(data []byte, size int, imei string) ([]models.Record, error) {
 		latitudeInt, err := streamToInt32(reader.Next(4))
 		// fmt.Println("latitudeInt :", latitudeInt) // Latitude
 		// fmt.Println("#####################")
-		fmt.Println()
 		// latitude := float64(latitudeInt) // PRECISION
 
 		reader.Next(2)                              // Altitude
@@ -62,8 +61,8 @@ func ParseData(data []byte, size int, imei string) ([]models.Record, error) {
 		if err != nil {
 			// return elements, fmt.Errorf("angle, err = streamToInt16(reader.Next(2))")
 		}
-		// fmt.Println("longitudeInt :", longitudeInt)
-		// fmt.Println("latitudeInt :", latitudeInt)
+		fmt.Println("longitudeInt :", longitudeInt)
+		fmt.Println("latitudeInt :", latitudeInt)
 
 		elements = append(elements, models.Record{
 			Imei: imei,

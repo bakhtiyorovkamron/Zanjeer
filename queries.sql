@@ -1,5 +1,5 @@
 	create or  replace procedure set_location(
-		imei varchar,
+		device_imei varchar,
 		longitude varchar[],
 		latitude varchar[]
 	)
@@ -7,9 +7,9 @@
 	as $$
 	begin
 
-	delete from devices_location where devices_location.imei=imei;
+	delete from devices_location where devices_location.imei=device_imei;
 
-	insert into devices_location(imei,longitude,latitude) values(imei,longitude,latitude);
+	insert into devices_location(id,imei,longitude,latitiude) values(gen_random_uuid(),device_imei,longitude,latitude);
 
 	commit;
 	end;
