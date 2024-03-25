@@ -20,8 +20,8 @@ func (p *postgresRepo) SetLocation(req []models.Record) error {
 		if v.Imei != "" {
 			imei = v.Imei
 		}
-		longitude = append(longitude, fmt.Sprintf("%d", v.Longitude))
-		latitude = append(latitude, fmt.Sprintf("%d", v.Latitude))
+		longitude = append(longitude, fmt.Sprintf("%f", v.Longitude))
+		latitude = append(latitude, fmt.Sprintf("%f", v.Latitude))
 	}
 
 	longitudeArray := pq.Array(longitude)
