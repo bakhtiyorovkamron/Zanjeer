@@ -17,6 +17,9 @@ func (p *postgresRepo) SetLocation(req []models.Record) error {
 	query := `call set_location($1,$2,$3)`
 
 	for _, v := range req {
+		if v.Longitude == 0 || v.Longitude == 0 || v.Latitude < 0 || v.Longitude < 0 {
+			continue
+		}
 		if v.Imei != "" {
 			imei = v.Imei
 		}
@@ -26,6 +29,9 @@ func (p *postgresRepo) SetLocation(req []models.Record) error {
 
 	longitudeArray := pq.Array(longitude)
 	latitudeArray := pq.Array(latitude)
+	if len(longitude) == 0 || len(latitude) == 0 {
+		return fmt.Errorf("empty latitude array")
+	}
 
 	result, err := p.Db.Db.Exec(query, imei, longitudeArray, latitudeArray)
 	if err != nil {
