@@ -3,10 +3,8 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
-	"log"
 	"net"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/Projects/Zanjeer/config"
@@ -89,6 +87,7 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 			fmt.Println("Error:", err)
 			break
 		}
+		fmt.Println("Buffer :", string(buffer))
 
 		if imeiTaken {
 
@@ -104,9 +103,9 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 			case 2:
 				data, err := helpers.ParseData(buffer, size, *imei)
 				if err != nil {
-					// fmt.Println("ERROR while paring data :", err)
 					break
 				}
+
 				if pg.Postgres().SetLocation(data) != nil {
 					fmt.Println("ERROR while Setting location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", err)
 				}
@@ -182,25 +181,6 @@ func HexToDec(hex string) int64 {
 	return num
 }
 
-const (
-	url    = "http://5.39.92.50:8081/longlat"
-	method = "POST"
-)
-
-func Post(d DeviceData) {
-
-	payload := strings.NewReader(fmt.Sprintf(`{
-		"imei": "%s",
-		"lon": "%s",
-		"lat": "%s"
-	}`, d.IMEI, d.Lng, d.Lat))
-
-	_, err := helpers.SendHTTPRequest(url, method, payload)
-	if err != nil {
-		log.Fatal("Error while updating device location", err)
-	}
-
-}
 func hexToTime(hexTimestamp string) (time.Time, error) {
 	// Decode the hex string into a byte slice
 	hexBytes, err := hex.DecodeString(hexTimestamp)
