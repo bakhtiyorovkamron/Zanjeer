@@ -95,6 +95,7 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 			if helpers.Imei(buffer) {
 				*imei = string(buffer[2:17])
 			}
+			fmt.Println("Message :", message)
 
 			switch *step {
 			case 1:

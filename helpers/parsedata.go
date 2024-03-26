@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"bytes"
-	"fmt"
 
 	"github.com/Projects/Zanjeer/models"
 )
@@ -20,7 +19,7 @@ func Imei(data []byte) bool {
 func ParseData(data []byte, size int, imei string) ([]models.Record, error) {
 	reader := bytes.NewBuffer(data)
 	// fmt.Println("Reader Size:", reader.Len())
-	fmt.Println("Data :", data)
+	// fmt.Println("Data :", data)
 	// Header
 	reader.Next(4) // 4 Zero Bytes
 	// dataLength, _ := streamToInt32(reader.Next(4))  // Header
