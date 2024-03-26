@@ -8,7 +8,7 @@ import (
 	"github.com/Projects/Zanjeer/models"
 )
 
-func (p *postgresRepo) SetLocation(req []models.Record) error {
+func (p *postgresRepo) SetLocation(req models.Record) error {
 	var (
 		longitude, latitude = []string{}, []string{}
 		imei                string
@@ -16,16 +16,8 @@ func (p *postgresRepo) SetLocation(req []models.Record) error {
 
 	query := `call set_location($1,$2,$3)`
 
-	for _, v := range req {
-		if v.Longitude == 0 || v.Longitude == 0 || v.Latitude < 0 || v.Longitude < 0 {
-			continue
-		}
-		if v.Imei != "" {
-			imei = v.Imei
-		}
-		longitude = append(longitude, fmt.Sprintf("%f", v.Longitude))
-		latitude = append(latitude, fmt.Sprintf("%f", v.Latitude))
-	}
+	longitude = append(longitude, req.Longitude)
+	latitude = append(latitude, req.Latitude)
 
 	longitudeArray := pq.Array(longitude)
 	latitudeArray := pq.Array(latitude)

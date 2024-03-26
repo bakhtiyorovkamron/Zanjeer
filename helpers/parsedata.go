@@ -66,11 +66,11 @@ func ParseData(data []byte, size int, imei string) ([]models.Record, error) {
 			Imei: imei,
 			Location: models.Location{Type: "Point",
 				Coordinates: []int32{longitudeInt, latitudeInt}},
-			Time:      timestamp,
-			Angle:     angle,
-			Speed:     speed,
-			Longitude: float32(longitudeInt) * 0.0000001,
-			Latitude:  float32(latitudeInt) * 0.0000001,
+			Time:  timestamp,
+			Angle: angle,
+			Speed: speed,
+			// Longitude: float32(longitudeInt) * 0.0000001,
+			// Latitude:  float32(latitudeInt) * 0.0000001,
 		})
 
 		// elements[i] = models.Record{

@@ -4,8 +4,17 @@ import (
 	"bytes"
 	"encoding/binary"
 	"math"
+	"strconv"
 	"time"
 )
+
+func StringToUint8(str string) (int, error) {
+	num, err := strconv.Atoi(str)
+	if err != nil {
+		return num, err
+	}
+	return num, nil
+}
 
 func streamToUInt8(data []byte) (uint8, error) {
 	var y uint8

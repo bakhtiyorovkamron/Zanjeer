@@ -3,7 +3,7 @@ package postgres
 import "github.com/Projects/Zanjeer/models"
 
 type PostgresI interface {
-	SetLocation(req []models.Record) error
+	SetLocation(req models.Record) error
 	// Login(req models.Login) (models.LoginResponse, error)
 	// CreateAdmin(req models.Admin) (models.Admin, error)
 	// GetAdmins(req models.GetAdmins) ([]models.Admin, error)

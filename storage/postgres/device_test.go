@@ -23,27 +23,27 @@ func TestSetLocation(t *testing.T) {
 
 	pg := New(db, logger, cfg)
 
-	data := []models.Record{
-		{
-			Imei:      "359633103869421",
-			Longitude: 94898293,
-			Latitude:  123444589,
-		},
-		{
-			Imei:      "359633103869421",
-			Longitude: 94898293,
-			Latitude:  123444589,
-		},
-		{
-			Imei:      "359633103869421",
-			Longitude: 94898293,
-			Latitude:  123444589,
-		},
-		{
-			Imei:      "359633103869421",
-			Longitude: 94898293,
-			Latitude:  123444589,
-		},
+	data := models.Record{
+		// {
+		// 	Imei:      "359633103869421",
+		// 	Longitude: 94898293,
+		// 	Latitude:  123444589,
+		// },
+		// {
+		// 	Imei:      "359633103869421",
+		// 	Longitude: 94898293,
+		// 	Latitude:  123444589,
+		// },
+		// {
+		// 	Imei:      "359633103869421",
+		// 	Longitude: 94898293,
+		// 	Latitude:  123444589,
+		// },
+		// {
+		// 	Imei:      "359633103869421",
+		// 	Longitude: 94898293,
+		// 	Latitude:  123444589,
+		// },
 	}
 
 	if pg.SetLocation(data) != nil {

@@ -8,8 +8,8 @@ type Record struct {
 	Time      time.Time
 	Angle     int16
 	Speed     int16
-	Longitude float32
-	Latitude  float32
+	Longitude string
+	Latitude  string
 }
 type Location struct {
 	Type        string
