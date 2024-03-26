@@ -11,7 +11,6 @@ import (
 func (p *postgresRepo) SetLocation(req models.Record) error {
 	var (
 		longitude, latitude = []string{}, []string{}
-		imei                string
 	)
 
 	query := `call set_location($1,$2,$3)`
@@ -25,7 +24,7 @@ func (p *postgresRepo) SetLocation(req models.Record) error {
 		return fmt.Errorf("empty latitude array")
 	}
 
-	_, err := p.Db.Db.Exec(query, imei, longitudeArray, latitudeArray)
+	_, err := p.Db.Db.Exec(query, req.Imei, longitudeArray, latitudeArray)
 	if err != nil {
 		fmt.Println("Error executing:", err)
 		return err
