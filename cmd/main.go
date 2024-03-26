@@ -87,7 +87,6 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 			fmt.Println("Error:", err)
 			break
 		}
-		fmt.Println("Buffer :", string(buffer))
 
 		if imeiTaken {
 
@@ -110,7 +109,6 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 					fmt.Println("ERROR while Setting location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", err)
 				}
 
-				fmt.Println("Length of data :", len(data))
 				// d, _ := json.MarshalIndent(data, "", " ")
 				// fmt.Println(string(d))
 				// notification.Send(string(d))

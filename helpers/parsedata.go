@@ -20,7 +20,7 @@ func Imei(data []byte) bool {
 func ParseData(data []byte, size int, imei string) ([]models.Record, error) {
 	reader := bytes.NewBuffer(data)
 	// fmt.Println("Reader Size:", reader.Len())
-
+	fmt.Println("Data :", data)
 	// Header
 	reader.Next(4) // 4 Zero Bytes
 	// dataLength, _ := streamToInt32(reader.Next(4))  // Header
@@ -62,8 +62,7 @@ func ParseData(data []byte, size int, imei string) ([]models.Record, error) {
 		if longitudeInt == 0 || latitudeInt == 0 {
 			continue
 		}
-		fmt.Println("longitudeInt :", longitudeInt)
-		fmt.Println("latitudeInt :", latitudeInt)
+
 		elements = append(elements, models.Record{
 			Imei: imei,
 			Location: models.Location{Type: "Point",
