@@ -6,10 +6,12 @@ type Record struct {
 	Imei      string
 	Location  Location
 	Time      time.Time
-	Angle     int16
-	Speed     int16
-	Longitude string
-	Latitude  string
+	Angle     int64
+	Speed     int64
+	Longitude float64
+	Latitude  float64
+	Altitude  int64
+	Size      uint8
 }
 type Location struct {
 	Type        string

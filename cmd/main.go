@@ -10,7 +10,6 @@ import (
 
 	"github.com/Projects/Zanjeer/config"
 	"github.com/Projects/Zanjeer/helpers"
-	"github.com/Projects/Zanjeer/models"
 	"github.com/Projects/Zanjeer/pkg/db"
 	"github.com/Projects/Zanjeer/pkg/logger"
 	"github.com/Projects/Zanjeer/storage"
@@ -97,38 +96,26 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 			if helpers.Imei(buffer) {
 				*imei = string(buffer[2:17])
 			}
-			// fmt.Println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-			// fmt.Println("Message in HEX :", message)
-			// fmt.Println("Message in Byte :", buffer)
-			// fmt.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 			switch *step {
 			case 1:
 				messageTrans[*step](step, imei, message, conn)
 			case 2:
-				// data, err := helpers.ParseData(buffer, size, *imei)
-				// if err != nil {
-				// 	break
-				// }
-				// longitude := message[38:46]
-				// latitude := message[46:54]
-				data := models.Record{
-					Longitude: message[38:46],
-					Latitude:  message[46:54],
-					Imei:      *imei,
-				}
 
-				if pg.Postgres().SetLocation(data) != nil {
-					fmt.Println("ERROR while Setting location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", err)
+				data, err := helpers.ReadMessage(message, *imei)
+				if err == nil {
+					if pg.Postgres().SetLocation(data) != nil {
+						fmt.Println("ERROR while Setting location!", err)
+					}
+				} else {
+					fmt.Println("ERROR while Reading Message :", err)
 				}
 
 				d, _ := json.MarshalIndent(data, "", " ")
 				fmt.Println(string(d))
-				// notification.Send(string(d))
-				size, err := helpers.StringToUint8(message[18:20])
 				if err == nil {
 					fmt.Println("Size sendt")
-					conn.Write([]byte{0, 0, 0, uint8(size)})
+					conn.Write([]byte{0, 0, 0, data.Size})
 				}
 			}
 		} else {

@@ -16,8 +16,8 @@ func (p *postgresRepo) SetLocation(req models.Record) error {
 
 	query := `call set_location($1,$2,$3)`
 
-	longitude = append(longitude, req.Longitude)
-	latitude = append(latitude, req.Latitude)
+	longitude = append(longitude, fmt.Sprintf("%f", req.Longitude))
+	latitude = append(latitude, fmt.Sprintf("%f", req.Latitude))
 
 	longitudeArray := pq.Array(longitude)
 	latitudeArray := pq.Array(latitude)
@@ -25,11 +25,10 @@ func (p *postgresRepo) SetLocation(req models.Record) error {
 		return fmt.Errorf("empty latitude array")
 	}
 
-	result, err := p.Db.Db.Exec(query, imei, longitudeArray, latitudeArray)
+	_, err := p.Db.Db.Exec(query, imei, longitudeArray, latitudeArray)
 	if err != nil {
 		fmt.Println("Error executing:", err)
 		return err
 	}
-	fmt.Println("Result:", result)
 	return nil
 }
