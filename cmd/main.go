@@ -104,6 +104,8 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 			switch *step {
 			case 1:
 				messageTrans[*step](step, imei, message, conn)
+				b := []byte{1} // 0x00 if we decline the message
+				conn.Write(b)
 			case 2:
 
 				data, err := helpers.ReadMessage(message, *imei)
