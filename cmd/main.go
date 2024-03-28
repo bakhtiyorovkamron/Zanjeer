@@ -114,7 +114,7 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 				d, _ := json.MarshalIndent(data, "", " ")
 				fmt.Println(string(d))
 				if err == nil {
-					fmt.Println("Size sent : ", data.Size)
+					fmt.Println("Size sent : ", size)
 					conn.Write([]byte{0, 0, 0, uint8(size)})
 				}
 			}
