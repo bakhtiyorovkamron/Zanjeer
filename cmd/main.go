@@ -86,6 +86,8 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 		size, err := conn.Read(buffer)
 		if err != nil {
 			fmt.Println("Error conn.Read :", err)
+			b := []byte{0} // 0x00 if we decline the message
+			conn.Write(b)
 			break
 		}
 
