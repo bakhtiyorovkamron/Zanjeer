@@ -17,28 +17,9 @@ func main() {
 }
 
 func inputTrigger() {
-	fmt.Println("Paste full 'Codec 8' packet to parse it or:")
-	fmt.Println("Type SERVER to start the server or:")
-	fmt.Println("Type EXIT to stop the program")
-	deviceIMEI := "default_IMEI"
-	var userInput string
-	fmt.Print("waiting for input: ")
-	fmt.Scanln(&userInput)
-	userInput = strings.ToUpper(userInput)
-	if userInput == "EXIT" {
-		fmt.Println("exiting program............")
-		os.Exit(0)
-	} else if userInput == "SERVER" {
-		startServerTrigger()
-	} else {
-		if codec8eChecker(strings.ReplaceAll(userInput, " ", "")) == false {
-			fmt.Println("Wrong input or invalid Codec8 packet")
-			fmt.Println()
-			inputTrigger()
-		} else {
-			codecParserTrigger(userInput, deviceIMEI, "USER")
-		}
-	}
+
+	startServerTrigger()
+
 }
 
 func crc16Arc(data string) bool {
