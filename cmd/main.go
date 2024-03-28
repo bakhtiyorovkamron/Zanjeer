@@ -109,7 +109,7 @@ func asciiIMEIConverter(hexIMEI string) string {
 
 func startServerTrigger() {
 	fmt.Println("Starting server!")
-	ln, _ := net.Listen("tcp", ":8080")
+	ln, _ := net.Listen("tcp", ":1234")
 	defer ln.Close()
 	for {
 		conn, _ := ln.Accept()
