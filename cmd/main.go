@@ -115,7 +115,7 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 				fmt.Println(string(d))
 				if err == nil {
 					fmt.Println("Size sent : ", data.Size)
-					conn.Write([]byte{0, 0, 0, data.Size})
+					conn.Write([]byte{0, 0, 0, uint8(size)})
 				}
 			}
 		} else {
