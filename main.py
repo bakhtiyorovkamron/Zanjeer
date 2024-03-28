@@ -6,7 +6,7 @@ import struct
 import decimal
 
 HOST = socket.gethostbyname(socket.gethostname())  #function may not work in Linux systems, change to string with IP adress example: "192.168.0.1"
-PORT = 7494  #change this to your port
+PORT = 8080  #change this to your port
 
 def input_trigger(): #triggers user input         
 		
