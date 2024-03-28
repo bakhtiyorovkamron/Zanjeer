@@ -85,7 +85,7 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 		// Read data from the client
 		size, err := conn.Read(buffer)
 		if err != nil {
-			fmt.Println("Error:", err)
+			fmt.Println("Error conn.Read :", err)
 			break
 		}
 
@@ -96,6 +96,8 @@ func handleClient(conn net.Conn, db *db.Postgres, log *logger.Logger, cfg config
 			if helpers.Imei(buffer) {
 				*imei = string(buffer[2:17])
 			}
+
+			fmt.Println("Message :", message)
 
 			switch *step {
 			case 1:
