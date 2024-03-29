@@ -63,6 +63,6 @@ func main() {
 
 	r.POST("/location", h.handleLocation)
 
-	log.Println("Server is listening on port 8080...")
+	log.Println("Server is listening on port 1234...")
 	log.Fatal(r.Run(":1234"))
 }

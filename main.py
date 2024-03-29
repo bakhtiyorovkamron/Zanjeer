@@ -201,9 +201,9 @@ def codec_8e_parser(codec_8E_packet, device_imei, props): #think a lot before mo
 		data_field_position += len(priority)
 
 		longitude = avl_data_start[data_field_position:data_field_position+8]
-		io_dict["longtitude"] = struct.unpack('>i', bytes.fromhex(longtitude))[0]
-		print (f"longtitude = {struct.unpack('>i', bytes.fromhex(longtitude))[0]}")
-		data_field_position += len(longtitude)
+		io_dict["longtitude"] = struct.unpack('>i', bytes.fromhex(longitude))[0]
+		print (f"longtitude = {struct.unpack('>i', bytes.fromhex(longitude))[0]}")
+		data_field_position += len(longitude)
 
 		latitude = avl_data_start[data_field_position:data_field_position+8]
 		print (f"latitude = {struct.unpack('>i', bytes.fromhex(latitude))[0]}")
@@ -212,7 +212,7 @@ def codec_8e_parser(codec_8E_packet, device_imei, props): #think a lot before mo
 
 		conn = http.client.HTTPConnection("localhost", 1234)
 		payload = json.dumps({
-		  "longitude": struct.unpack('>i', bytes.fromhex(longtitude))[0],
+		  "longitude": struct.unpack('>i', bytes.fromhex(longitude))[0],
 		  "latitude": struct.unpack('>i', bytes.fromhex(latitude))[0],
 		  "imei": device_imei
 		})
