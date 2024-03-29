@@ -4,6 +4,8 @@ import os
 import datetime
 import struct
 import decimal
+import http.client
+
 
 HOST = socket.gethostbyname(socket.gethostname())  #function may not work in Linux systems, change to string with IP adress example: "192.168.0.1"
 PORT = 8080  #change this to your port
@@ -198,7 +200,7 @@ def codec_8e_parser(codec_8E_packet, device_imei, props): #think a lot before mo
 		print (f"record priority = {int(priority, 16)}")
 		data_field_position += len(priority)
 
-		longtitude = avl_data_start[data_field_position:data_field_position+8]
+		latitude = avl_data_start[data_field_position:data_field_position+8]
 		io_dict["longtitude"] = struct.unpack('>i', bytes.fromhex(longtitude))[0]
 		print (f"longtitude = {struct.unpack('>i', bytes.fromhex(longtitude))[0]}")
 		data_field_position += len(longtitude)
@@ -207,6 +209,20 @@ def codec_8e_parser(codec_8E_packet, device_imei, props): #think a lot before mo
 		print (f"latitude = {struct.unpack('>i', bytes.fromhex(latitude))[0]}")
 		io_dict["latitude"] = struct.unpack('>i', bytes.fromhex(latitude))[0]
 		data_field_position += len(latitude)
+
+		conn = http.client.HTTPConnection("localhost", 1234)
+		payload = json.dumps({
+		  "longitude": latitude,
+		  "latitude": latitude,
+		  "imei": device_imei
+		})
+		headers = {
+		  'Content-Type': 'application/json'
+		}
+		conn.request("POST", "/location", payload, headers)
+		res = conn.getresponse()
+		data = res.read()
+		print(data.decode("utf-8"))
 
 		altitude = avl_data_start[data_field_position:data_field_position+4]
 		print(f"altitude = {int(altitude, 16)}")
