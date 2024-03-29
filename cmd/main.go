@@ -33,8 +33,8 @@ func (h *H) handleLocation(c *gin.Context) {
 
 	h.storage.SetLocation(models.Record{
 		Imei:      loc.IMEI,
-		Latitude:  loc.Latitude,
-		Longitude: loc.Longitude,
+		Latitude:  loc.Latitude * 0.0000001,
+		Longitude: loc.Longitude * 0.0000001,
 	})
 
 	// Respond with a success message
