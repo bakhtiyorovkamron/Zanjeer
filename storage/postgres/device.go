@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/lib/pq"
 
@@ -15,8 +16,8 @@ func (p *postgresRepo) SetLocation(req models.Record) error {
 
 	query := `call set_location($1,$2,$3)`
 
-	longitude = append(longitude, fmt.Sprintf("%f", req.Longitude))
-	latitude = append(latitude, fmt.Sprintf("%f", req.Latitude))
+	longitude = append(longitude, strconv.FormatFloat(req.Longitude, 'f', -1, 64))
+	latitude = append(latitude, strconv.FormatFloat(req.Latitude, 'f', -1, 64))
 
 	longitudeArray := pq.Array(longitude)
 	latitudeArray := pq.Array(latitude)

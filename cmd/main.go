@@ -31,10 +31,12 @@ func (h *H) handleLocation(c *gin.Context) {
 	// Do something with the location data, for example, print it
 	log.Printf("Received location - Longitude: %f, Latitude: %f, IMEI: %s\n", loc.Longitude, loc.Latitude, loc.IMEI)
 
+	loc.Latitude *= 0.0000001
+	loc.Longitude *= 0.0000001
 	h.storage.SetLocation(models.Record{
 		Imei:      loc.IMEI,
-		Latitude:  loc.Latitude * 0.0000001,
-		Longitude: loc.Longitude * 0.0000001,
+		Latitude:  loc.Latitude,
+		Longitude: loc.Longitude,
 	})
 
 	// Respond with a success message
