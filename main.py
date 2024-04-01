@@ -16,24 +16,24 @@ def input_trigger(): #triggers user input
 	print("Type SERVER to start the server or:")
 	print("Type EXIT to stop the program")
 	device_imei = "default_IMEI"
-	# user_input = input("waiting for input: ")
-	# if user_input.upper() == "EXIT":
-	# 	print(f"exiting program............")
-	# 	exit()	
+	user_input = input("waiting for input: ")
+	if user_input.upper() == "EXIT":
+		print(f"exiting program............")
+		exit()	
 
-	# elif user_input.upper() == "SERVER":
-	start_server_tigger()
-	# else:		
-	# 	try:
-	# 		if codec_8e_checker(user_input.replace(" ","")) == False:
-	# 			print("Wrong input or invalid Codec8 packet")
-	# 			print()
-	# 			input_trigger()
-	# 		else:
-	# 			codec_parser_trigger(user_input, device_imei, "USER")
-	# 	except Exception as e:
-	# 		print(f"error occured: {e} enter proper Codec8 packet or EXIT!!!")
-	# 		input_trigger()		
+	elif user_input.upper() == "SERVER":
+		start_server_tigger()
+	else:		
+		try:
+			if codec_8e_checker(user_input.replace(" ","")) == False:
+				print("Wrong input or invalid Codec8 packet")
+				print()
+				input_trigger()
+			else:
+				codec_parser_trigger(user_input, device_imei, "USER")
+		except Exception as e:
+			print(f"error occured: {e} enter proper Codec8 packet or EXIT!!!")
+			input_trigger()		
 
 ####################################################
 ###############__CRC16/ARC Checker__################
